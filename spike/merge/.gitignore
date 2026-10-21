@@ -1,0 +1,6 @@
+# Merged real purchase history — never commit.
+orders.json
+distinct_products.json
+mapping.json
+coverage.json
+away.json

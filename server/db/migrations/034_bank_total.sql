@@ -1,0 +1,11 @@
+-- What the BANK said it was taking, off its own 3-D Secure page.
+--
+-- The vendor's cart can change between the household agreeing to a price and
+-- the gateway being called. Live on 2026-09-23 the app showed Rs 320 and the
+-- bank asked for Rs 255, one item having gone from the order in between - and
+-- by then the order exists and the checkout's own figure is history.
+--
+-- So the one number that cannot be stale is kept, and shown beside the box
+-- where the household types the code. Null when the bank's page does not say,
+-- which is common and is not an error.
+alter table order_jobs add column if not exists bank_total numeric;

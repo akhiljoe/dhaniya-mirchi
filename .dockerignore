@@ -1,0 +1,16 @@
+# The build context must never carry real data or secrets into an image.
+# spike/ holds real order history, vendor sessions and logged-in browser
+# profiles; .env holds the database password and the Cognito client secret.
+.env
+.env.*
+!.env.example
+spike/
+docs/
+.git/
+.bolt/
+.claude/
+**/node_modules/
+**/dist/
+**/.chromedata/
+**/.userdata/
+**/*.log

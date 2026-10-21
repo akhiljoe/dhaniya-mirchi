@@ -1,0 +1,7 @@
+# Line endings: LF in the repository and in every checkout. These files run in
+# Linux containers and on the Linux VM, where a CRLF breaks shell scripts,
+# Dockerfiles, nginx config and SQL in confusing ways.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary

@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* Cards, sheets, the nav bar: what sits on the page. */
+    --c-surface: 255 255 255;
+    /* Behind a sheet. Dark in both themes: a scrim that lightens is not a
+       scrim, and `ink-900` is near-white once the text scale turns over. */
+    --c-scrim: 38 31 24;
+    --c-sand-50: 250 248 245;
+    --c-sand-100: 245 240 234;
+    --c-sand-200: 232 224 212;
+    --c-sand-300: 212 199 179;
+    --c-sand-400: 184 168 136;
+    --c-sand-500: 156 138 106;
+    --c-sand-600: 125 109 82;
+    --c-sand-700: 94 81 64;
+    --c-sand-800: 63 54 43;
+    --c-sand-900: 38 31 24;
+    --c-sage-50: 244 247 244;
+    --c-sage-100: 230 239 231;
+    --c-sage-200: 205 220 205;
+    --c-sage-300: 168 199 169;
+    --c-sage-400: 125 166 127;
+    --c-sage-500: 90 138 93;
+    --c-sage-600: 69 110 72;
+    --c-sage-700: 55 88 56;
+    --c-sage-800: 42 68 43;
+    --c-sage-900: 28 47 29;
+    --c-clay-50: 253 246 243;
+    --c-clay-100: 250 234 228;
+    --c-clay-200: 244 209 197;
+    --c-clay-300: 233 176 156;
+    --c-clay-400: 217 133 106;
+    --c-clay-500: 196 96 63;
+    --c-clay-600: 164 74 48;
+    --c-clay-700: 131 58 38;
+    --c-clay-800: 98 46 30;
+    --c-clay-900: 66 30 20;
+    --c-ink-50: 246 246 244;
+    --c-ink-100: 232 232 228;
+    --c-ink-200: 209 209 203;
+    --c-ink-300: 168 168 160;
+    --c-ink-400: 122 122 114;
+    --c-ink-500: 92 92 84;
+    --c-ink-600: 69 69 64;
+    --c-ink-700: 51 51 47;
+    --c-ink-800: 34 34 32;
+    --c-ink-900: 19 19 18;
+    --c-accent-50: 238 246 255;
+    --c-accent-100: 217 236 255;
+    --c-accent-200: 188 220 255;
+    --c-accent-300: 142 197 255;
+    --c-accent-400: 89 163 255;
+    --c-accent-500: 51 128 245;
+    --c-accent-600: 29 97 219;
+    --c-accent-700: 23 75 176;
+    --c-accent-800: 22 61 138;
+    --c-accent-900: 21 53 110;
+  }
+
+  /* Dark: the same roles, different values. sand and ink run the other
+     way round - the page is dark and the text is light - so `bg-sand-50`
+     is still "the page" and `text-ink-800` is still "what you read".
+     sage and clay are re-picked rather than reversed: a green tuned to
+     read on white is muddy on near-black, and a warning must stay one. */
+  .dark {
+    color-scheme: dark;
+    --c-surface: 30 27 22;
+    --c-scrim: 8 7 5;
+    --c-sand-50: 22 20 15;
+    --c-sand-100: 31 28 22;
+    /* Borders, and they have to work harder here. A card is `surface` on
+       `sand-50`, eight levels apart, and the shadow that separates them in
+       light does nothing on near-black - so the edge is all there is. */
+    --c-sand-200: 58 53 44;
+    --c-sand-300: 78 71 59;
+    --c-sand-400: 85 78 64;
+    --c-sand-500: 125 116 95;
+    --c-sand-600: 161 151 126;
+    --c-sand-700: 194 185 163;
+    --c-sand-800: 222 215 198;
+    --c-sand-900: 242 237 227;
+    --c-sage-50: 22 32 26;
+    --c-sage-100: 30 46 34;
+    --c-sage-200: 44 68 48;
+    --c-sage-300: 61 95 66;
+    --c-sage-400: 95 138 99;
+    --c-sage-500: 122 168 126;
+    --c-sage-600: 147 191 150;
+    --c-sage-700: 174 211 176;
+    --c-sage-800: 203 228 204;
+    --c-sage-900: 230 242 230;
+    --c-clay-50: 36 21 17;
+    --c-clay-100: 51 32 26;
+    --c-clay-200: 74 46 36;
+    --c-clay-300: 107 66 50;
+    --c-clay-400: 153 97 74;
+    --c-clay-500: 192 127 99;
+    --c-clay-600: 217 155 127;
+    --c-clay-700: 232 183 159;
+    --c-clay-800: 242 210 192;
+    --c-clay-900: 249 232 224;
+    --c-ink-50: 19 19 18;
+    --c-ink-100: 28 28 26;
+    --c-ink-200: 42 42 39;
+    --c-ink-300: 126 126 118;
+    --c-ink-400: 154 154 145;
+    --c-ink-500: 176 176 167;
+    --c-ink-600: 196 196 187;
+    --c-ink-700: 216 216 208;
+    --c-ink-800: 235 235 229;
+    --c-ink-900: 247 247 244;
+    --c-accent-50: 21 32 54;
+    --c-accent-100: 25 46 82;
+    --c-accent-200: 30 65 122;
+    --c-accent-300: 42 96 176;
+    --c-accent-400: 74 140 224;
+    --c-accent-500: 110 170 245;
+    --c-accent-600: 148 195 250;
+    --c-accent-700: 182 216 252;
+    --c-accent-800: 212 233 254;
+    --c-accent-900: 235 245 255;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-sand-50 text-ink-800 font-sans;
+    overscroll-behavior: none;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    @apply bg-accent-200 text-accent-900;
+  }
+}
+
+@layer components {
+  .skeleton {
+    @apply bg-sand-200/60 rounded-lg;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(var(--c-surface) / 0.6) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  .card {
+    @apply bg-surface rounded-2xl shadow-soft border border-sand-200/60;
+  }
+
+  /* What a sheet is drawn on. Not `sand-50`: in dark that is the page
+     itself, so a popup drawn on it had no edge and no shadow to fall back
+     on, and merged into the thing it was covering. */
+  .sheet-surface {
+    @apply bg-surface;
+  }
+
+  /* In dark there is no shadow to lean on, so every edge is carried by its
+     border alone and none of them may be faint. */
+  .dark .card,
+  .dark .sheet-surface {
+    border: 1px solid rgb(var(--c-sand-300));
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-soft-md hover:border-sand-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl
+           bg-ink-800 text-sand-50 font-semibold text-sm
+           transition-all duration-200
+           hover:bg-ink-700 active:scale-[0.98]
+           disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl
+           bg-surface text-ink-700 font-semibold text-sm border border-sand-300
+           transition-all duration-200
+           hover:bg-sand-50 hover:border-sand-400 active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg
+           text-ink-500 font-medium text-sm
+           transition-all duration-200
+           hover:bg-sand-100 hover:text-ink-700;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-200
+           text-ink-800 placeholder:text-ink-300 text-base
+           transition-all duration-200
+           focus:outline-none focus:border-accent-400 focus:bg-surface focus:ring-4 focus:ring-accent-100;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium
+           text-ink-400 transition-all duration-200 cursor-pointer
+           hover:bg-sand-100 hover:text-ink-700;
+  }
+
+  .nav-item-active {
+    @apply bg-sand-100 text-ink-800;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .stagger > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.3s; }
+  .stagger > *:nth-child(7) { animation-delay: 0.35s; }
+  .stagger > *:nth-child(8) { animation-delay: 0.4s; }
+  .stagger > *:nth-child(9) { animation-delay: 0.45s; }
+  .stagger > *:nth-child(10) { animation-delay: 0.5s; }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for main content */
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-area::-webkit-scrollbar-thumb {
+  @apply bg-sand-200 rounded-full;
+}
+.scroll-area::-webkit-scrollbar-thumb:hover {
+  @apply bg-sand-300;
+}

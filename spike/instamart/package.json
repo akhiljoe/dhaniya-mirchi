@@ -1,0 +1,19 @@
+{
+  "name": "instamart-ingestion-spike",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Phase 0 recon: where does Swiggy Instamart expose a user's order history, and in what shape?",
+  "scripts": {
+    "capture": "tsx capture.ts",
+    "extract": "tsx extract.ts",
+    "probe:headless": "tsx probe-headless.ts",
+    "capture:checkout": "tsx --env-file=../../.env capture-checkout.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "playwright": "^1.48.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  }
+}

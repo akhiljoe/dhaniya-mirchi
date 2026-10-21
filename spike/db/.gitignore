@@ -1,0 +1,2 @@
+# Real purchase history exported from the local database. Never commit.
+*.json

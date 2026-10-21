@@ -1,0 +1,141 @@
+# DhaniyaMirchi — the whole stack, identical locally and in production
+# (design §11, §14). Locally: `docker compose up --build`, then
+# http://localhost:8100.
+#
+# Rules this file follows (learned in an earlier project, design §14.3):
+# - Every host port binds to 127.0.0.1. Docker's iptables rules bypass ufw, so
+#   "8100:80" would be public even with the firewall saying otherwise.
+#   One opt-in exception: WEB_BIND=0.0.0.0 in a LOCAL .env opens the site to
+#   the home network (a phone on the same Wi-Fi). Never on the VM.
+# - No env_file: every variable a container needs is forwarded explicitly
+#   below, so a variable that exists only in .env can't silently fail to arrive.
+# - The api and worker talk only through Postgres; neither publishes a port.
+
+name: dhaniya
+
+x-db-url: &db-url postgres://${POSTGRES_USER:-dhaniya}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-dhaniya}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-dhaniya}
+      POSTGRES_USER: ${POSTGRES_USER:-dhaniya}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5435}:5432" # loopback only: for psql and integration tests
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  # One-shot: applies db/migrations, then exits 0. api and worker wait for it.
+  migrate:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+      target: api
+    command: ["node", "dist/migrate.js"]
+    environment:
+      DATABASE_URL: *db-url
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+      target: api
+    environment:
+      DATABASE_URL: *db-url
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: "8080"
+      AUTH_ENABLED: ${AUTH_ENABLED:-false}
+      AUTH_ISSUER: ${AUTH_ISSUER:-}
+      AUTH_AUTHORIZE_URL: ${AUTH_AUTHORIZE_URL:-}
+      AUTH_TOKEN_URL: ${AUTH_TOKEN_URL:-}
+      AUTH_JWKS_URL: ${AUTH_JWKS_URL:-}
+      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:-}
+      AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET:-}
+      AUTH_REDIRECT_URI: ${AUTH_REDIRECT_URI:-}
+      AUTH_ALLOWED_EMAILS: ${AUTH_ALLOWED_EMAILS:-}
+      AUTH_IDENTITY_PROVIDER: ${AUTH_IDENTITY_PROVIDER:-}
+      AUTH_RETURN_URL: ${AUTH_RETURN_URL:-/}
+      AUTH_SECURE_COOKIES: ${AUTH_SECURE_COOKIES:-true}
+      AUTH_PROFILE_PICTURE: ${AUTH_PROFILE_PICTURE:-false}
+      # Public key only: the api seals what users type (phone, OTP) but can
+      # open nothing (design §14.3).
+      VAULT_PUBLIC_KEY: ${VAULT_PUBLIC_KEY:-}
+      # Web Push: the public key only — browsers subscribe with it (design §13.1).
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      # The AI layer (design §7.8): which provider runs the free allowance and
+      # its model — never a key (only the worker calls a model).
+      AI_ENABLED: ${AI_ENABLED:-true}
+      LLM_PROVIDER: ${LLM_PROVIDER:-off}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  # Headless Chromium + the ingestion jobs (design §7.10). Isolated: its own
+  # container and memory cap, so a runaway browser can't take the api down.
+  worker:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+      target: worker
+    environment:
+      DATABASE_URL: *db-url
+      NODE_ENV: ${NODE_ENV:-development}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # The only service holding the vault private key(s).
+      VAULT_PUBLIC_KEY: ${VAULT_PUBLIC_KEY:-}
+      VAULT_PRIVATE_KEYS: ${VAULT_PRIVATE_KEYS:-}
+      # Web Push: the worker signs the notices it sends.
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-}
+      # The AI layer (design §7.8): the worker makes every model call.
+      AI_ENABLED: ${AI_ENABLED:-true}
+      LLM_PROVIDER: ${LLM_PROVIDER:-off}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    mem_limit: ${WORKER_MEM_LIMIT:-1g}
+    restart: unless-stopped
+
+  # nginx: the built SPA, plus /api and /auth proxied to the api. The only
+  # service a browser reaches. AUTH_REDIRECT_URI must be THIS origin.
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - "${WEB_BIND:-127.0.0.1}:${WEB_PORT:-8100}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:

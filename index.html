@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <!-- Not installable until launch: no manifest link, no apple-mobile-web-app-capable.
+         An installed Android app took over the Google sign-in return and loaded it
+         twice. At launch, link /manifest.webmanifest again and restore
+         apple-mobile-web-app-capable (iPhone web push needs the install, design §13.1). -->
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <meta name="theme-color" content="#26221c" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-default>DhaniyaMirchi</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

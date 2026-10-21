@@ -1,0 +1,34 @@
+{
+  "name": "dhaniya-mirchi-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "API and ingestion worker for DhaniyaMirchi. Two entry points, one codebase, two containers.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "dev:api": "tsx watch --env-file-if-exists=../.env src/api/main.ts",
+    "dev:worker": "tsx watch --env-file-if-exists=../.env src/worker/main.ts",
+    "migrate": "tsx --env-file-if-exists=../.env src/migrate.ts",
+    "test:integration": "vitest run -c vitest.integration.config.ts",
+    "vault:keygen": "tsx src/vault-keygen.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
+    "pg": "^8.23.0",
+    "playwright-core": "^1.63.0",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "@types/pg": "^8.23.1",
+    "@types/web-push": "^3.6.4",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
+  }
+}

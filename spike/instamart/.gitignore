@@ -1,0 +1,20 @@
+# All real data — never commit. .chromedata is a logged-in Chrome profile
+# (live Instamart session). net_log.jsonl holds recorded session headers.
+# orders_raw.json holds delivery address + phone. The rest is purchase history.
+.chromedata
+.userdata
+net_log.jsonl
+orders_raw.json
+orders.json
+packs.json
+distinct_products.json
+mapping.json
+*.tmp.json
+*.tmp.jsonl
+node_modules
+*.tmp.png
+*.tmp.ts
+# checkout-recon.json holds the delivery address and the card's token;
+# .checkoutdata is the browser profile the checkout recon runs in.
+checkout-recon.json
+.checkoutdata

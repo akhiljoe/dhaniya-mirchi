@@ -1,0 +1,28 @@
+# session.json holds a LIVE Blinkit token for a real account with a saved card.
+# orders_raw.json / orders.json hold real purchase history (and PII before it is
+# stripped). .userdata is a logged-in browser profile. None may be committed.
+session.json
+orders_raw.json
+orders.json
+.userdata
+node_modules
+detail_raw.json
+distinct_products.json
+stubs.json
+mapping.json
+distinct_products.tsv
+orders.backup-*.json
+# login-recon.json holds the phone, the OTP typed and a live token;
+# .logindata is the browser profile the login recon runs in.
+login-recon.json
+.logindata
+# checkout-recon.json holds the delivery address and the card's token.
+checkout-recon.json
+# The cart recon outputs hold the household's cart, its addresses and prices.
+cart-recon.json
+cart-recon2.json
+cart-add.json
+login-storage-diff.json
+login-form-recon.json
+login-all.json
+paysheet-recon.json

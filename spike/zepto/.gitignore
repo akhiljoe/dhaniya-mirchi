@@ -1,0 +1,7 @@
+# Everything a recording holds is real: the phone number, the login OTP typed,
+# live session tokens and cookies, delivery addresses, the cart, the card's
+# token and last digits, screenshots of all of it. .chromedata is a signed-in
+# Chrome profile. None of it may be committed.
+.chromedata
+runs
+node_modules

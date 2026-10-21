@@ -1,0 +1,11 @@
+-- The household asked to stop a payment that had already been started.
+--
+-- Cancelling BEFORE Pay is pressed just fails the row: nothing was ordered.
+-- After it, the vendor has made a real order and a browser of ours is sitting
+-- on the bank's own page, so the row cannot simply be rewritten - the worker
+-- has to be told, so it can stop waiting for the code and press the vendor's
+-- own way out, the way a person would.
+--
+-- A flag rather than a status, because the job is still running while this is
+-- true and only the worker may say how it ended.
+alter table order_jobs add column if not exists cancel_requested boolean not null default false;

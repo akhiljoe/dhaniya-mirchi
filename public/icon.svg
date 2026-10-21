@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#26221c"/>
+  <!-- coriander leaf -->
+  <path d="M176 352c-40-8-72-52-64-108 32-20 92-16 124 28 20 28 16 64-4 84l-56-4z" fill="#6f9a5b"/>
+  <path d="M172 348c10-40 30-72 60-96" stroke="#26221c" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- green chilli -->
+  <path d="M252 380c68-4 132-60 152-150 4-16-14-24-22-10-30 56-78 96-136 108-22 4-18 52 6 52z" fill="#8fb35a"/>
+  <path d="M388 224c4-24 18-40 36-46" stroke="#6f9a5b" stroke-width="14" fill="none" stroke-linecap="round"/>
+</svg>

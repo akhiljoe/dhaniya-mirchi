@@ -1,0 +1,16 @@
+{
+  "name": "zepto-spike",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Zepto recon: record a full human-driven session (login, cart, checkout, payment up to the bank OTP).",
+  "scripts": {
+    "record": "tsx record.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "playwright": "^1.48.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  }
+}

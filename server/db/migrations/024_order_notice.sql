@@ -1,0 +1,11 @@
+-- Telling the household when an order is waiting on them (design §19 stage 3).
+--
+-- An order that needs a CVV, a bank's code or a yes to the price waits four
+-- minutes and then gives up. If the household has closed the page by then,
+-- nothing tells them - and for a code the order is already placed, so silence
+-- leaves them with an unpaid order they never hear about. That happened on
+-- 2026-09-22.
+--
+-- `notified_for` holds the status last pushed about, so each question is
+-- asked once and a job moving on asks again.
+alter table order_jobs add column notified_for text null;

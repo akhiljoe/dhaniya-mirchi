@@ -1,0 +1,38 @@
+{
+  "name": "blinkit-ingestion-spike",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Phase 0 go/no-go: can a Blinkit session token be captured and replayed server-side to read order history?",
+  "scripts": {
+    "capture": "tsx capture.ts",
+    "capture:login": "tsx capture-login.ts",
+    "capture:login-storage": "tsx capture-login-storage.ts",
+    "capture:login-form": "tsx capture-login-form.ts",
+    "capture:login-survives": "tsx capture-login-survives.ts",
+    "capture:login-all": "tsx capture-login-all.ts",
+    "capture:checkout": "tsx capture-checkout.ts",
+    "cart:recon": "tsx cart-recon.ts",
+    "cart:recon2": "tsx cart-recon2.ts",
+    "cart:add": "tsx cart-add.ts",
+    "cart:semantics": "tsx cart-semantics.ts",
+    "cart:read": "tsx cart-read.ts",
+    "cart:page": "tsx cart-page.ts",
+    "cart:peek": "tsx cart-peek.ts",
+    "cart:find-read": "tsx cart-find-read.ts",
+    "cart:phone-test": "tsx cart-phone-test.ts",
+    "replay": "tsx replay.ts",
+    "probe": "tsx probe.ts",
+    "dump": "tsx dump.ts",
+    "extract": "tsx extract.ts",
+    "normalize": "tsx normalize.ts",
+    "analyze": "tsx analyze.ts",
+    "probe:headless": "tsx probe-chrome-headless.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "playwright": "^1.48.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  }
+}
